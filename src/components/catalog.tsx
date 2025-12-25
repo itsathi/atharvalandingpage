@@ -59,12 +59,8 @@ export default function Catalog() {
               <div className="font-bold text-sm sm:text-base md:text-lg text-white truncate w-full">
                 {track.name}
               </div>
-              <div className="text-xs sm:text-sm md:text-base text-gray-400 truncate w-full">
-                {track.artists.map((artist) => artist.name).join(", ")}
-              </div>
-              <div className="text-xs sm:text-sm md:text-base text-gray-500 truncate w-full">
-                {track.album.name}
-              </div>
+              
+              
             </div>
           </motion.a>
         ))}
