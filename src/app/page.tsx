@@ -505,7 +505,7 @@ export default function Home() {
             type: "keyframes",
           }}
           id="container"
-          className="relative z-10 flex flex-col w-4/5 h-4/5 items-center rounded-4xl shadow-lg shadow-black/70 bg-white/5 backdrop-blur-s overflow-hidden"
+          className="relative z-10 flex flex-col w-4/5 min-h-[70vh] md:min-h-[70vh] items-center rounded-4xl shadow-lg shadow-black/70 bg-white/5 backdrop-blur-s overflow-visible"
         >
           <div
             id="picandname"
@@ -596,9 +596,17 @@ export default function Home() {
                 </div>
               </button>
 
-              <div className="w-full h-full flex">
-                {/* Conditional Rendering */}
-                {toggle ? <Catalog /> : <Links />}
+              <div id="contentcontainer" className="w-full m-4">
+                <div
+                  id="contentsection"
+                  className="flex flex-col w-full items-center gap-4"
+                >
+                  {/* ...button stays the same... */}
+
+                  <div className="w-full flex">
+                    {toggle ? <Catalog /> : <Links />}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -668,90 +676,89 @@ export default function Home() {
                 revealedClassName="dark:text-white text-black"
                 revealDelayMs={50}
               />
-              
             </motion.h1>
           </div>
         </LampContainer>
       </section>
 
+      {/* Replace the entire sticky-cards section (from <div id="sticky-cards" ...>) */}
       <div
         id="sticky-cards"
         ref={container}
-        className="relative w-full min-h-[410vh] bg-[#020617] perspective-distant transform-3d"
+        className="relative w-full min-h-[400vh] md:min-h-[410vh] bg-[#020617] perspective-distant transform-3d"
       >
-        <div id="sticky-card-wrapper" className="relative w-full">
-          <div id="stacked-cards" className="relative w-full">
-            {pincardConfigs.map((card) => {
+        <div id="sticky-card-wrapper" className="relative w-full h-full">
+          <div id="stacked-cards" className="relative w-full h-full">
+            {pincardConfigs.map((card, index) => {
               const hasImage =
                 !!card.hasImage && !!getSlotUrl(slots[card.imageSlotKey || ""]);
               return (
-                <div
+                <section
                   key={card.key}
-                  className="sticky-card h-screen w-full flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12 px-6 md:px-12 transform-3d backface-hidden"
+                  className="sticky-card h-screen w-full flex flex-col justify-center items-center gap-6 px-4 md:px-12 transform-3d backface-hidden"
                 >
-                  {/* Modern card container with enhanced depth */}
+                  {/* Mobile-first responsive card */}
                   <div
-                    className="relative w-full max-w-6xl h-[85vh] rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-2xl shadow-[0_25px_80px_-20px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] ring-1 ring-white/15 transform-gpu"
+                    className="relative w-full max-w-sm md:max-w-6xl h-[80vh] md:h-[85vh] rounded-2xl md:rounded-[2.5rem] overflow-hidden bg-linear-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-xl md:backdrop-blur-2xl shadow-2xl md:shadow-[0_25px_80px_-20px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] ring-1 ring-white/20 transform-gpu"
                     style={{ willChange: "transform, opacity" }}
                   >
-                    {/* Animated border glow effect */}
-                    <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-r from-purple-500/50 via-blue-500/10 to-purple-500/10 opacity-0 transition-opacity duration-500" />
+                    {/* Mobile border glow */}
+                    <div className="absolute inset-0 rounded-2xl md:rounded-[2.5rem] bg-linear-to-r from-purple-500/30 via-blue-500/20 to-purple-500/20 opacity-75 md:opacity-0 md:group-hover:opacity-100 transition-all duration-500 md:group-hover:duration-300" />
 
-                    {/* Content */}
-                    <div className="w-full h-full flex flex-col md:flex-row justify-center items-center gap-8  md:gap-12 p-8 md:p-12 border-2 shadow-2xl shadow-cyan-500/50  ">
+                    {/* Content - Mobile stacked, Desktop side-by-side */}
+                    <div className="w-full h-full flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12 p-6 md:p-12">
                       <div
-                        className={`card-content w-full md:w-1/2 flex flex-col justify-center gap-6 z-10 transform-3d`}
+                        className={`card-content w-full md:w-1/2 flex flex-col justify-center gap-4 md:gap-6 z-10 transform-3d`}
                       >
                         <h2
-                          className="font-lora text-2xl md:text-5xl font-bold text-center md:text-left bg-gradient-to-br from-white via-slate-100 to-slate-300 bg-clip-text text-transparent drop-shadow-lg italic"
+                          className="font-lora text-xl md:text-5xl font-bold text-center md:text-left bg-linear-to-br from-white via-slate-100 to-slate-300 bg-clip-text text-transparent drop-shadow-lg italic leading-tight md:leading-none"
                           style={{
                             fontFamily: "'Lora', var(--font-playfair), serif",
-                            letterSpacing: "0.04em",
+                            letterSpacing: "0.02em md:0.04em",
                           }}
                         >
                           {card.Heading}
                         </h2>
                         <p
-                          className="font-spaceGrotesk text-base md:text-lg text-slate-300/90 text-center md:text-left leading-relaxed"
+                          className="font-spaceGrotesk text-sm md:text-lg text-slate-300/90 text-center md:text-left leading-relaxed md:leading-relaxed"
                           style={{
                             fontFamily:
                               "'Space Grotesk', var(--font-inter), sans-serif",
                             fontWeight: 500,
-                            letterSpacing: "0.03em",
+                            letterSpacing: "0.02em",
                           }}
                         >
                           {card.text}
                         </p>
                       </div>
-                      {/* Image */}
+
+                      {/* Responsive Image */}
                       {hasImage && (
-                        <div className="w-full md:w-1/2 flex justify-center items-center z-10">
-                          <div className="card-image-wrapper relative w-full h-64 md:h-96 rounded-2xl overflow-hidden shadow-[0_15px_50px_-15px_rgba(0,0,0,0.6),0_0_0_1px_rgba(255,255,255,0.1)] transform-3d">
+                        <div className="w-full md:w-1/2 flex justify-center items-center z-10 px-2 md:px-0">
+                          <div className="card-image-wrapper relative w-full max-w-xs md:max-w-none h-48 md:h-96 rounded-xl md:rounded-2xl overflow-hidden shadow-xl md:shadow-[0_15px_50px_-15px_rgba(0,0,0,0.6),0_0_0_1px_rgba(255,255,255,0.1)] transform-3d mx-auto md:mx-0">
                             <motion.img
-                              whileHover={{
-                                scale: 1.5,
-                              }}
-                              className="w-full h-full object-cover"
+                              whileHover={{ scale: 1.05 }}
+                              transition={{ duration: 0.3 }}
+                              className="w-full h-full object-cover hover:scale-110 md:hover:scale-105 duration-300"
                               src={getSlotUrl(slots[card.imageSlotKey])}
                               alt={card.imageAlt || "Card image"}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent" />
-                            {/* Image shine effect */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none" />
+                            <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/20 to-transparent" />
+                            <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
                           </div>
                         </div>
                       )}
                     </div>
 
-                    {/* Enhanced gradient overlays for depth */}
-                    <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.05)_0%,transparent_60%)]" />
-                    <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.3)_0%,transparent_60%)]" />
+                    {/* Enhanced overlays - mobile optimized */}
+                    <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08)_0%,transparent_60%)] md:bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.05)_0%,transparent_60%)]" />
+                    <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.4)_0%,transparent_60%)] md:bg-[radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.3)_0%,transparent_60%)]" />
 
-                    {/* Corner accent lights */}
-                    <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-transparent rounded-br-full blur-2xl pointer-events-none" />
-                    <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-blue-500/20 to-transparent rounded-tl-full blur-2xl pointer-events-none" />
+                    {/* Corner lights - scaled for mobile */}
+                    <div className="absolute top-0 left-0 w-20 h-20 md:w-32 md:h-32 bg-linear-to-br from-purple-500/30 to-transparent rounded-br-full blur-xl pointer-events-none md:blur-2xl" />
+                    <div className="absolute bottom-0 right-0 w-20 h-20 md:w-32 md:h-32 bg-linear-to-tl from-blue-500/30 to-transparent rounded-tl-full blur-xl pointer-events-none md:blur-2xl" />
                   </div>
-                </div>
+                </section>
               );
             })}
           </div>
