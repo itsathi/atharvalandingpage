@@ -28,7 +28,7 @@ export function middleware(req: NextRequest) {
 
 // 5. The Matcher: This ensures the middleware only runs on admin routes
 export const config = {
-  matcher: ["/admin/:path*"], 
+  matcher: ["/admin/:path*"],
 };
 
 
